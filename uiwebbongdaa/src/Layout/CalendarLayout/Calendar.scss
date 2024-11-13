@@ -1,0 +1,46 @@
+.calendar {
+    width: 600px;
+    margin: auto;
+    text-align: center;
+    font-family: Arial, sans-serif;
+    flex: 1;
+    overflow: hidden;
+    height: 700px;
+    /* Điều chỉnh chiều cao tổng thể */
+    box-sizing: border-box;
+}
+
+.weekdays,
+.days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0px;
+    /* Giảm khoảng cách */
+}
+
+.day {
+    border: 1px solid #ddd;
+    background-color: #f9f9f9;
+    height: 100px;
+    width: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2em;
+    box-sizing: border-box;
+}
+
+.day.empty {
+    background-color: #f0f0f0;
+    border: none;
+}
+
+.day:hover {
+    background-color: #e0e0e0;
+    cursor: pointer;
+}
+
+.day.booked {
+    background-color: #f76c6c;
+    color: white;
+}

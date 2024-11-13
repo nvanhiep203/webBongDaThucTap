@@ -1,0 +1,71 @@
+.headerthanhtoansuccess {
+    background-color: rgb(1, 136, 46);
+    color: white;
+    padding: 10px;
+    text-align: center;
+    font-size: 40px;
+    height: 150px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-overlay3 {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content3 {
+    background: white;
+    width: 800px;
+    max-width: 90%;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.bodythanhtoansuccess {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding-top: 10px;
+    padding-left: 80px;
+    padding-right: 80px;
+    font-family: Arial, sans-serif;
+    font-size: 20px;
+}
+
+.divgroup {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 30px;
+}
+
+.divgroup p:first-child {
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.divgroup p:last-child {
+    text-align: right;
+
+}
+
+.hrthanhtoansuccess {
+    width: 90%;
+    margin: auto;
+}
+.divtextfootersuccess{
+    margin-top: 10px;
+    text-align: center;
+    padding: 10px;
+    font-size: 20px;
+}

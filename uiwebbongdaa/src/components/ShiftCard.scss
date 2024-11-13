@@ -1,0 +1,27 @@
+.shift-card {
+    border: 1px solid #ddd;
+    padding: 15px;
+    width: 200px;
+    margin: 10px;
+    text-align: center;
+  }
+  
+  .shift-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .shift-details {
+    margin-top: 10px;
+  }
+  
+  .status-btn {
+    background-color: #3f51b5;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  

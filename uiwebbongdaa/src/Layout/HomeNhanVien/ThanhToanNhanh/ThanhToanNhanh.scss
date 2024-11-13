@@ -1,0 +1,80 @@
+.thanh-toan-nhanh-container {
+    padding: 20px;
+  }
+  
+  .title {
+    text-align: center;
+    font-size: 24px;
+    color: #333;
+  }
+  
+  .content {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 20px;
+  }
+  
+  .invoice-list, .invoice-info, .used-services, .payment-summary {
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  }
+  
+  .invoice-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .invoice-table th, .invoice-table td {
+    padding: 8px;
+    border: 1px solid #ddd;
+    text-align: center;
+  }
+  
+  .info-group {
+    margin-bottom: 10px;
+  }
+  
+  .info-group label {
+    display: block;
+    font-weight: bold;
+  }
+  
+  .info-group input {
+    width: 100%;
+    padding: 5px;
+    margin-top: 5px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+  }
+  
+  .services-list {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .service-card {
+    width: 120px;
+    margin: 10px;
+    text-align: center;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px;
+  }
+  
+  .payment-summary .summary-item {
+    margin-bottom: 10px;
+  }
+  
+  .pay-button {
+    width: 100%;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: #fff;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  

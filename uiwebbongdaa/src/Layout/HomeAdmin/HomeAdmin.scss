@@ -1,0 +1,99 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: Arial, sans-serif;
+  }
+  
+  .HomeAdmin-container {
+    display: flex;
+  }
+  
+  .sidebar {
+    width: 200px;
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
+  }
+  
+  .header {
+    background-color: #333;
+    color: #fff;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .a-content{
+    flex: 1;
+    padding: 20px;
+  }
+  
+  .user-form, .user-table {
+    margin-bottom: 20px;
+  }
+  
+  .user-form input, .user-form button {
+    display: block;
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 10px;
+    font-size: 16px;
+  }
+  
+  .user-table table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .user-table th, .user-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+  }
+  
+  .user-table th {
+    background-color: #f4f4f4;
+  }
+  
+  .actions button {
+    background-color: #ff4d4d;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    color: #fff;
+    border-radius: 5px;
+  }
+  
+  .actions button:hover {
+    background-color: #ff1a1a;
+  }
+  .add-form {
+    margin-top: 20px;
+  }
+  
+  .add-form h3 {
+    margin-bottom: 10px;
+  }
+  
+  .add-form input {
+    display: block;
+    margin: 10px 0;
+    padding: 8px;
+    width: 100%;
+    max-width: 300px;
+  }
+  
+  .add-form button {
+    background-color: #007bff;
+    color: white;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  

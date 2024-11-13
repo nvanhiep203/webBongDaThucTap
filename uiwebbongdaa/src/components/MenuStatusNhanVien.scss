@@ -1,0 +1,55 @@
+.menu-status {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    background-color: #f8f9fa;
+    padding: 10px 20px;
+    border-radius: 8px;
+    margin: 20px 0;
+  }
+  
+  .status-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #333;
+    font-size: 14px;
+    text-align: center;
+  }
+  
+  .status-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    color: #fff;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  .all-icon {
+    background-color: #6c757d;
+  }
+  
+  .available-icon {
+    background-color: #28a745;
+  }
+  
+  .waiting-icon {
+    background-color: #007bff;
+  }
+  
+  .payment-icon {
+    background-color: #dc3545;
+  }
+  
+  .active-icon {
+    background-color: #ffc107;
+  }
+  .quagio-icon {
+    background-color: #e700b5;
+  }
+  
