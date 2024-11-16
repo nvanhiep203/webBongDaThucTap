@@ -23,6 +23,7 @@ const caRoutes=require('./routes/CaRoutes')
 const bookingRoutes=require('./routes/BookingRoutes')
 const thamsoRoutes=require('./routes/ThamSoRoutes')
 const hoadonRoutes=require('./routes/HoaDonRoutes')
+const giaocaRoutes=require('./routes/GiaoCaRoutes')
 
 var app = express();
 
@@ -65,6 +66,8 @@ app.use(session({
 app.use(cors());
 app.use(express.static(path.join(__dirname, '/styles')))
 app.use(express.static(path.join(__dirname, '/images')))
+app.use(express.static(path.join(__dirname, '/uploads')))
+
 
 app.use('/',handle);
 app.use('/',thongtinadmin);
@@ -77,6 +80,7 @@ app.use('/',caRoutes)
 app.use('/',bookingRoutes)
 app.use('/',thamsoRoutes)
 app.use('/',hoadonRoutes)
+app.use('/',giaocaRoutes)
 
 app.listen(8080, () => {
   try {

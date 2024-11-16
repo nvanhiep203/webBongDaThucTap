@@ -65,7 +65,10 @@ function Register () {
             password: password
           })
         })
-        if (response.ok) {
+        const data = await response.json()
+        if (data.message) {
+          alert(data.message)
+        } else {
           const confirmed = window.confirm(
             'Đăng ký người dùng thành công. Nhấn OK để về trang đăng nhập.'
           )

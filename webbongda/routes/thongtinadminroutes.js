@@ -1,9 +1,9 @@
 const router = require('express').Router()
 const User = require('../models/UserModel')
 const bcrypt = require('bcryptjs')
-const { response } = require('express')
-const jwt = require('jsonwebtoken')
 const multer = require('multer')
+const momenttimezone = require('moment-timezone')
+const GiaoCa = require('../models/GiaoCaModels')
 
 const storage = multer.memoryStorage()
 
@@ -19,12 +19,24 @@ router.post('/registerweb', async (req, res) => {
     }
     const exitphone = await User.findOne({ phone })
     if (exitphone) {
-      return res.status(400).json({ message: 'số điện thoại đã được đăng kí' })
+      return res.status(400).json({ message: 'Số điện thoại đã được đăng kí' })
+    }
+
+    // Kiểm tra email đúng định dạng
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+    if (!email || !emailRegex.test(email)) {
+      return res.status(400).json({ message: 'Email không hợp lệ' })
     }
 
     const existingUser = await User.findOne({ email })
     if (existingUser) {
-      return res.status(400).json({ message: 'email đã được đăng ký' })
+      return res.status(400).json({ message: 'Email đã được đăng ký' })
+    }
+
+    // Kiểm tra mật khẩu mạnh
+    const passwordRegex =/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>]).{8,}$/
+    if (!password || !passwordRegex.test(password)) {
+      return res.status(400).json({message:'Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ hoa, chữ thường, số và ký tự đặc biệt'})
     }
 
     const hashedPassword = await bcrypt.hash(password, 10)
@@ -44,6 +56,7 @@ router.post('/registerweb', async (req, res) => {
   }
 })
 
+
 router.post('/loginfull', async (req, res) => {
   try {
     const { email, password, role } = req.body
@@ -62,18 +75,60 @@ router.post('/loginfull', async (req, res) => {
     if (user.role !== role) {
       res.json({ message: 'bạn không có quyền truy cập trang web' })
     } else {
-      res.json(user)
+      if (user.role === 'staff') {
+        const today = momenttimezone()
+        const startOfDay = today.startOf('day').toDate()
+        const endOfDay = today.endOf('day').toDate()
+
+        const giaoca = await GiaoCa.find({
+          timenhanca: { $gte: startOfDay, $lt: endOfDay }
+        })
+        if (giaoca.length > 0) {
+          if (user.giaoca) {
+            const giao = await GiaoCa.findById(user.giaoca)
+            res.json({ user, nhanca: giao.nhanca })
+          } else {
+            res.json({ message: 'chưa đến ca của bạn' })
+          }
+        } else {
+          res.json({ user })
+        }
+      } else {
+        res.json({ user })
+      }
     }
   } catch (error) {
     console.error(error)
     res.status(500).json({ message: 'Đã xảy ra lỗi.' })
   }
 })
+
+
 router.get('/getnhanvien', async (req, res) => {
   try {
     const user = await User.find().lean()
     const userjson = user.filter(u => u.role === 'staff')
-    res.json(userjson)
+    const userjson2 = userjson.map(user => {
+      const trangthai = () => {
+        if (user.giaoca === null || user.giaoca === undefined) {
+          return 'không trong ca'
+        } else {
+          return 'đang trong ca'
+        }
+      }
+      return {
+        _id: user._id,
+        hovaten: user.hovaten,
+        phone: user.phone,
+        email: user.email,
+        password: user.password,
+        role: user.role,
+        hoadon: user.hoadon,
+        booking: user.booking,
+        trangthai: trangthai()
+      }
+    })
+    res.json(userjson2)
   } catch (error) {
     console.error(error)
     res.status(500).json({ message: 'Đã xảy ra lỗi.' })

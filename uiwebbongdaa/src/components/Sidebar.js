@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import './Sidebar.scss';
+import React, { useState } from 'react'
+import './Sidebar.scss'
 
-function Sidebar({ onItemSelect }) {
-  const [activeItem, setActiveItem] = useState(null);
+function Sidebar ({ onItemSelect }) {
+  const [activeItem, setActiveItem] = useState(null)
   const menuItems = [
     { id: 1, label: 'Quản Lý Tài Khoản Nhân Viên', dataKey: 'staffManagement' },
     { id: 2, label: 'Quản Lý Sân Bóng', dataKey: 'fieldManagement' },
@@ -12,18 +12,19 @@ function Sidebar({ onItemSelect }) {
     { id: 6, label: 'Quản Lý Đồ Thuê', dataKey: 'equipmentManagement' },
     { id: 7, label: 'Quản Lý Nước Uống', dataKey: 'beverageManagement' },
     { id: 8, label: 'Quản Lý Ca', dataKey: 'quanlyca' },
-  ];
+    { id: 9, label: 'Lịch sử giao dịch', dataKey: 'lichsu' }
+  ]
 
-  const handleClick = (item) => {
-    setActiveItem(item.id);
-    onItemSelect(item.dataKey);  // Pass dataKey to App component to display relevant data
-  };
+  const handleClick = item => {
+    setActiveItem(item.id)
+    onItemSelect(item.dataKey) // Pass dataKey to App component to display relevant data
+  }
 
   return (
-    <div className="sidebar">
+    <div className='sidebar'>
       <h3>Quản lý tài khoản</h3>
       <ul>
-        {menuItems.map((item) => (
+        {menuItems.map(item => (
           <li
             key={item.id}
             className={activeItem === item.id ? 'active' : ''}
@@ -34,7 +35,7 @@ function Sidebar({ onItemSelect }) {
         ))}
       </ul>
     </div>
-  );
+  )
 }
 
-export default Sidebar;
+export default Sidebar

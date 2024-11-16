@@ -1,10 +1,13 @@
 body {
-    // background-image: url("../../assets/images/sanbong2.jpg");
+    font-family: "Roboto", "Arial", "Helvetica", sans-serif;
+  }
+  .divlogintong{
+    background-image: url("../../assets/images/sanbong2.jpg");
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
     background-attachment: fixed;
-    font-family: "Roboto", "Arial", "Helvetica", sans-serif;
+    height: 100vh;
   }
   .imgbongda {
     width: 100px;

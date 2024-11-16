@@ -9,27 +9,27 @@ const DoUongTable = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false) // Trạng thái modal
   const [currentRental, setCurrentRental] = useState(null) // Lưu thông tin đồ uống hiện tại (dùng khi sửa)
 
-  // Lấy danh sách đồ uống từ server
+
   const fetchRentals = async () => {
     try {
       const response = await axios.get('http://localhost:8080/getdouong')
-      console.log('Danh sách đồ uống:', response.data) // Kiểm tra dữ liệu nhận được từ API
-      setRentals(response.data) // Cập nhật lại state với dữ liệu từ API
+      console.log('Danh sách đồ uống:', response.data)
+      setRentals(response.data) 
     } catch (error) {
       console.error('Lỗi khi lấy danh sách đồ uống:', error)
     }
   }
 
-  // Mở modal để thêm đồ uống
+
   const openModal = (rental = null) => {
-    setCurrentRental(rental) // Cập nhật đồ uống hiện tại (để sửa hoặc thêm mới)
+    setCurrentRental(rental) 
     setModalIsOpen(true)
   }
 
-  // Đóng modal
+
   const closeModal = () => {
     setModalIsOpen(false)
-    setCurrentRental(null) // Reset lại khi đóng modal
+    setCurrentRental(null)
   }
 
   // Xử lý thay đổi trong form nhập liệu
@@ -41,7 +41,6 @@ const DoUongTable = () => {
     })
   }
 
-  // Thêm đồ uống mới hoặc sửa đồ uống
   const handleSubmit = async () => {
     try {
       const formData = new FormData()
@@ -78,17 +77,18 @@ const DoUongTable = () => {
   }
 
   // Xóa đồ uống
-  const handleDelete = async id => {
-    try {
-      console.log('Đang xóa đồ uống với ID:', id) // Debug ID đang xóa
-      await axios.post('http://localhost:8080/deletedouong', { _id: id })
-      fetchRentals() // Cập nhật lại danh sách đồ uống
-      alert('Đã xóa đồ uống thành công!')
-    } catch (error) {
-      console.error('Lỗi khi xóa đồ uống:', error)
-      alert('Đã xảy ra lỗi khi xóa!')
-    }
+const handleDelete = async (id) => {
+  try {
+    console.log('Đang xóa đồ uống với ID:', id); // Debug ID đang xóa
+    await axios.post(`http://localhost:8080/deletedouong/${id}`); 
+    fetchRentals(); // Cập nhật lại danh sách đồ uống sau khi xóa thành công
+    alert('Đã xóa đồ uống thành công!');
+  } catch (error) {
+    console.error('Lỗi khi xóa đồ uống:', error);
+    alert('Đã xảy ra lỗi khi xóa!');
   }
+};
+
 
   // Hiển thị chi tiết đồ uống
   const handleViewDetails = rental => {

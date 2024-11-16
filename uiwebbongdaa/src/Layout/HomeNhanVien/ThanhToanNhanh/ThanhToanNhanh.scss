@@ -77,4 +77,48 @@
     cursor: pointer;
     border-radius: 4px;
   }
+  .modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Background overlay */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
   
+  .modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 80%;
+    max-width: 600px;
+    max-height: 70vh; /* Giới hạn chiều cao */
+    overflow-y: auto; /* Bật cuộn dọc */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .modal-service-item {
+    display: flex;
+    padding: 10px;
+    align-items: center;
+    border-bottom: 1px solid #ddd; /* Phân cách giữa các mục */
+  }
+  .service-item{
+    
+  }
+  .modal-service-image {
+    height: 100px;
+    width: 100px;
+    margin-right: 15px;
+  }
+  .service-image {
+    height: 100px;
+    width: 100px;
+    margin-right: 15px;
+  }

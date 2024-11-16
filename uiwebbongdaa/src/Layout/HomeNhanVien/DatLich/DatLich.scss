@@ -1,0 +1,17 @@
+.shift-list {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10px;
+}
+
+.divshifttong {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: 10px;
+    width: 100%;
+    h2{
+        color: rgb(54, 54, 54);
+    }
+}

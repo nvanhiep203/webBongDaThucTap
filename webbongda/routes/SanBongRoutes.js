@@ -1,6 +1,10 @@
 const router = require('express').Router()
 const LoaiSanBong = require('../models/LoaiSanBongModels')
 const SanBong = require('../models/SanBongModels')
+const Ca = require('../models/CaModels')
+const Booking = require('../models/BookingModels')
+const moment = require('moment')
+const momenttimezone = require('moment-timezone')
 
 router.get('/getfullsan', async (req, res) => {
   try {
@@ -153,6 +157,165 @@ router.post('/deletesanbong/:idsanbong', async (req, res) => {
     await SanBong.findByIdAndDelete(idsanbong)
     await loaisanbong.save()
     res.json({ message: 'Xóa thành công' })
+  } catch (error) {
+    console.error('đã xảy ra lỗi:', error)
+    res.status(500).json({ error: 'Đã xảy ra lỗi' })
+  }
+})
+
+router.get('/getallsanbong', async (request, res) => {
+  try {
+    const sanbong = await SanBong.find().lean()
+    const currentDate = new Date()
+    const currentHours = currentDate.getHours()
+    const currentMinutes = currentDate.getMinutes()
+    const sanbongjson = await Promise.all(
+      sanbong.map(async san => {
+        const san1 = await SanBong.findById(san._id).lean()
+        const loaisan = await LoaiSanBong.findById(san1.loaisan).lean()
+
+        const ca = await Promise.all(
+          (
+            await Ca.find().lean()
+          ).map(async c => {
+            const today = momenttimezone()
+            const booking = await Booking.findOne({
+              ca: c._id,
+              sanbong: san1._id,
+              ngayda: today.startOf('day').toDate()
+            })
+            const trangthai = () => {
+              const enttimeHours = c.endtime.getHours()
+              const enttimeMinutes = c.endtime.getMinutes()
+              if (booking) {
+                if (booking.coc === true && booking.checkin === false) {
+                  return 'Chờ nhận sân'
+                } else if (
+                  booking.checkin === true &&
+                  booking.thanhtoan === false
+                ) {
+                  return 'Đang hoạt động'
+                } else if (booking.thanhtoan === true) {
+                  return 'Quá giờ'
+                }
+              } else {
+                if (enttimeHours === 0) {
+                  if (currentHours === 0 && currentMinutes < enttimeMinutes) {
+                    return 'Đang trống'
+                  } else {
+                    return 'Đang trống'
+                  }
+                } else if (
+                  enttimeHours < currentHours ||
+                  (enttimeHours === currentHours &&
+                    enttimeMinutes <= currentMinutes)
+                ) {
+                  return 'Quá giờ'
+                } else {
+                  return 'Đang trống'
+                }
+              }
+            }
+            return {
+              _id: c._id,
+              tenca: c.tenca,
+              date: momenttimezone().format('DD-MM-YYYY'),
+              giaca: c.giaca,
+              begintime: moment(c.begintime).format('HH:mm'),
+              endtime: moment(c.endtime).format('HH:mm'),
+              loaisan: loaisan ? loaisan.tenloaisan : null,
+              trangthai: trangthai()
+            }
+          })
+        )
+
+        return {
+          _id: san1._id,
+          tensan: san1.tensan,
+          ca: ca
+        }
+      })
+    )
+    res.json(sanbongjson)
+  } catch (error) {
+    console.error('đã xảy ra lỗi:', error)
+    res.status(500).json({ error: 'Đã xảy ra lỗi' })
+  }
+})
+router.get('/getfiltersanbong', async (request, res) => {
+  try {
+    const sanbong = await SanBong.find().lean()
+    const ngayda = request.query.ngayda
+      ? new Date(request.query.ngayda)
+      : new Date()
+    const currentHours = ngayda.getHours()
+    const currentMinutes = ngayda.getMinutes()
+
+    const sanbongjson = await Promise.all(
+      sanbong.map(async san => {
+        const san1 = await SanBong.findById(san._id).lean()
+        const loaisan = await LoaiSanBong.findById(san1.loaisan).lean()
+
+        const ca = await Promise.all(
+          (
+            await Ca.find().lean()
+          ).map(async c => {
+            const booking = await Booking.findOne({
+              ca: c._id,
+              sanbong: san1._id,
+              ngayda: moment(ngayda).startOf('day').toDate()
+            })
+            const trangthai = () => {
+              const enttimeHours = c.endtime.getHours()
+              const enttimeMinutes = c.endtime.getMinutes()
+              if (booking) {
+                if (booking.coc === true && booking.checkin === false) {
+                  return 'Chờ nhận sân'
+                } else if (
+                  booking.checkin === true &&
+                  booking.thanhtoan === false
+                ) {
+                  return 'Đang hoạt động'
+                }
+              } else {
+                if (enttimeHours === 0) {
+                  if (currentHours === 0 && currentMinutes < enttimeMinutes) {
+                    return 'Đang trống'
+                  } else {
+                    return 'Đang trống'
+                  }
+                } else if (
+                  enttimeHours < currentHours ||
+                  (enttimeHours === currentHours &&
+                    enttimeMinutes <= currentMinutes)
+                ) {
+                  return 'Quá giờ'
+                } else {
+                  return 'Đang trống'
+                }
+              }
+            }
+            return {
+              _id: c._id,
+              tenca: c.tenca,
+              date:moment(ngayda).format('DD-MM-YYYY'),
+              giaca: c.giaca,
+              begintime: moment(c.begintime).format('HH:mm'),
+              endtime: moment(c.endtime).format('HH:mm'),
+              loaisan: loaisan ? loaisan.tenloaisan : null,
+              trangthai: trangthai()
+            }
+          })
+        )
+
+        return {
+          _id: san1._id,
+          tensan: san1.tensan,
+          ca: ca
+        }
+      })
+    )
+    res.json(sanbongjson)
   } catch (error) {
     console.error('đã xảy ra lỗi:', error)
     res.status(500).json({ error: 'Đã xảy ra lỗi' })

@@ -3,6 +3,8 @@ import React, { useState, useEffect } from 'react'
 import './Calendar.scss'
 import ModalDatLich from './ModalDatLich'
 import ModalDatSan from './ModalDatSan'
+import ModalHuySan from './ModalHuySan'
+import ModalDoiLich from './ModalDoiLich'
 import { useLocation } from 'react-router-dom'
 
 function Calendar () {
@@ -13,12 +15,16 @@ function Calendar () {
   const [bookingDays, setBookingDays] = useState([]) // Thêm state để lưu các ngày có ca đặt
   const [bookingDetails, setBookingDetails] = useState([]) // Lưu thông tin các ca đã đặt
   const [datadatlich, setdatadatlich] = useState([])
+  const [isOpenModalHuySan, setisOpenModalHuySan] = useState(false)
+  const [idbooking, setidbooking] = useState('')
+  const [isOpenModalDoiLich, setisModalDoiLich] = useState(false)
 
   const location = useLocation()
   const userId = location.state?.userId || ''
-  console.log(userId)
 
-  // Lấy các ngày có ca đặt từ API
+  const today = new Date()
+  today.setHours(0, 0, 0, 0)
+
   const fetchBookingDays = async () => {
     try {
       const response = await fetch(
@@ -26,7 +32,7 @@ function Calendar () {
       )
       if (response.ok) {
         const data = await response.json()
-        setBookingDays(data) // Lưu các ngày có ca đặt vào state
+        setBookingDays(data)
       } else {
         console.error('Failed to fetch booking days')
       }
@@ -136,6 +142,11 @@ function Calendar () {
     clickedDate.setHours(0, 0, 0, 0)
     console.log(clickedDate)
 
+    if (clickedDate < today) {
+      alert('Bạn không thể chọn ngày trong quá khứ')
+      return
+    }
+
     const isBooked = bookingDays.some(
       bookingDay =>
         new Date(bookingDay).toDateString() === clickedDate.toDateString()
@@ -196,11 +207,78 @@ function Calendar () {
     }
   }
 
+  const getBookingStatus = bookingDetail => {
+    if (bookingDetail.coc === false) {
+      return 'chưa đặt cọc'
+    } else if (bookingDetail.coc && bookingDetail.checkin === false) {
+      return 'Đã đặt cọc'
+    } else if (bookingDetail.checkin && bookingDetail.thanhtoan) {
+      return 'Đang Đá'
+    } else {
+      return 'Đã thanh toán'
+    }
+  }
+
+  const getBookingbutton = bookingDetail => {
+    if (bookingDetail.coc === false) {
+      return (
+        <>
+          <button
+            onClick={() => handelxoabooking(bookingDetail._id, selectedDate)}
+          >
+            xóa
+          </button>
+        </>
+      )
+    } else if (bookingDetail.coc && bookingDetail.checkin === false) {
+      return (
+        <>
+          <button
+            onClick={() => {
+              setisOpenModalHuySan(true)
+              setidbooking(bookingDetail._id)
+            }}
+          >
+            hủy sân
+          </button>
+          <button
+            onClick={() => {
+              setisModalDoiLich(true)
+              setidbooking(bookingDetail._id)
+            }}
+          >
+            đổi lịch
+          </button>
+        </>
+      )
+    } else if (bookingDetail.checkin && bookingDetail.thanhtoan) {
+      return
+    } else {
+      return
+    }
+  }
+
+  const shouldShowChucNangColumn = bookingDetails.some(
+    bookingDetail =>
+      bookingDetail.coc === false ||
+      (bookingDetail.coc && bookingDetail.checkin === false)
+  )
+
   return (
     <div className='divcalendartong'>
       <div className='calendar'>
         <button onClick={() => setIsModalDatSanOpen(true)}>Đặt sân</button>
-        <div className='header'>
+        <button
+          className='nut'
+          onClick={() => {
+            localStorage.removeItem('authToken')
+            sessionStorage.removeItem('authToken')
+            window.location.href = 'http://localhost:3000'
+          }}
+        >
+          Đăng xuất
+        </button>
+        <div className='headercalendar'>
           <button onClick={prevMonth}>Previous</button>
           <h2>
             {currentDate.toLocaleString('default', { month: 'long' })}{' '}
@@ -232,6 +310,27 @@ function Calendar () {
           datadatlich={datadatlich}
           fetchdatlich={fetchdatlich}
         />
+        <ModalHuySan
+          isOpen={isOpenModalHuySan}
+          onClose={() => setisOpenModalHuySan(false)}
+          idbooking={idbooking}
+          fetchdata={() => {
+            fetchdatlich()
+            fetchBookingDays()
+            fetchBookingDetails(selectedDate)
+          }}
+          userId={userId}
+        />
+        <ModalDoiLich
+          isOpen={isOpenModalDoiLich}
+          onClose={() => setisModalDoiLich(false)}
+          idbooking={idbooking}
+          fetchdata={() => {
+            fetchdatlich()
+            fetchBookingDays()
+            fetchBookingDetails(selectedDate)
+          }}
+        />
       </div>
       <div className='divtablecalendartong'>
         <h3>Sự kiện</h3>
@@ -244,7 +343,7 @@ function Calendar () {
               <th>Giá</th>
               <th>Tiền cọc</th>
               <th>Trạng thái</th>
-              <th>Chức năng</th>
+              {shouldShowChucNangColumn && <th>Chức năng</th>}
             </tr>
           </thead>
           <tbody>
@@ -255,23 +354,10 @@ function Calendar () {
                 <td>{bookingDetail.soluongsan}</td>
                 <td>{bookingDetail.giaca.toLocaleString()} đ</td>
                 <td>{bookingDetail.tiencoc.toLocaleString()} đ</td>
-                <td>{bookingDetail.coc ? 'Đã đặt cọc' : 'chưa đặt cọc'}</td>
-                <td>
-                  {bookingDetail.coc ? (
-                    <>
-                      <button>hủy sân</button>
-                      <button>đổi lịch</button>
-                    </>
-                  ) : (
-                    <button
-                      onClick={() =>
-                        handelxoabooking(bookingDetail._id, selectedDate)
-                      }
-                    >
-                      xóa
-                    </button>
-                  )}
-                </td>
+                <td>{getBookingStatus(bookingDetail)}</td>
+                {shouldShowChucNangColumn && (
+                  <td>{getBookingbutton(bookingDetail)}</td>
+                )}
               </tr>
             ))}
           </tbody>

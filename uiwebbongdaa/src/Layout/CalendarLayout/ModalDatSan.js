@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import './ModalDatSan.scss'
 import ModalNganHang from './ModalNganHang'
 
-function ModalDatSan({ isOpen, onClose, userId, datadatlich = [], fetchdatlich }) {
+function ModalDatSan({ isOpen, onClose, userId, datadatlich, fetchdatlich }) {
   const [isModalNganHangOpen, setisModalNganHangOpen] = useState(false)
   const [tennguoidat, settennguoidat] = useState('')
   const [phone, setphone] = useState('')

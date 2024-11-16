@@ -1,0 +1,43 @@
+.luat-san-container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+  }
+  
+  .close-button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  
+  .content1 p {
+    margin: 10px 0;
+    line-height: 1.6;
+    color: #333;
+  }
+  
+  .note h3 {
+    margin-top: 20px;
+    font-size: 18px;
+    color: #555;
+  }
+  
+  .note ol {
+    margin-left: 20px;
+    line-height: 1.6;
+  }
+  
+  .note li {
+    margin-bottom: 10px;
+  }
+  

@@ -79,6 +79,11 @@ function ModalDatLich ({
     onClose()
   }
   const handledatlichsan = async () => {
+    if (!soluongSans[selectedShiftId] || soluongSans[selectedShiftId] <= 0) {
+      alert('Vui lòng nhập số lượng sân.')
+      return
+    }
+
     try {
       const response = await fetch(
         `http://localhost:8080/datlichsan/${userId}`,
@@ -108,6 +113,15 @@ function ModalDatLich ({
       console.error('Lỗi khi lưu đặt lịch sân:', error)
     }
   }
+
+  const isToday = date => {
+    const today = new Date()
+    const currentDate = today.toLocaleDateString()
+    const dateToCheck = new Date(date).toLocaleDateString()
+
+    return currentDate === dateToCheck
+  }
+
   const handleShiftClick = id => {
     const selectedShift = dataca.find(shift => shift._id === id)
 
@@ -116,8 +130,31 @@ function ModalDatLich ({
       return
     }
 
+    const currentTime = new Date()
+    if (isToday(date)) {
+      const timeToMillis = timeStr => {
+        const [hours, minutes] = timeStr.split(':').map(Number)
+        const date = new Date()
+        date.setHours(hours, minutes, 0, 0)
+        return date.getTime()
+      }
+
+      const currentMillis = currentTime.getTime()
+      let endTimeMillis = timeToMillis(selectedShift.endtime)
+
+      if (selectedShift.endtime === '00:00') {
+        endTimeMillis = timeToMillis('23:59')
+      }
+
+      if (currentMillis > endTimeMillis) {
+        alert('Ca này đã kết thúc, không thể đặt!')
+        return
+      }
+    }
+
     setSelectedShiftId(id)
   }
+
   const handleSoluongChange = (shiftId, value) => {
     const availableCount =
       dataca.find(shift => shift._id === shiftId)?.availableSanCount || 0
@@ -177,7 +214,7 @@ function ModalDatLich ({
                   value={soluongSans[shift._id]}
                   onChange={e => handleSoluongChange(shift._id, e.target.value)}
                   disabled={shift.availableSanCount === 0}
-                  max={shift.availableSanCount} 
+                  max={shift.availableSanCount}
                 />
               </label>
             </div>

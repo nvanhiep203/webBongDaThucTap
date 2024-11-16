@@ -1,0 +1,106 @@
+/* General styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  .shift-handover-screen {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  h2 {
+    text-align: center;
+    color: #3d2fb3;
+    font-size: 1.5rem;
+    margin: 20px 0;
+  }
+  
+  /* Transaction details and handover section layout */
+  .transaction-details,
+  .handover-section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  
+  .transaction-details > div,
+  .handover-section > div {
+    flex: 1 1 calc(50% - 16px); /* Two columns with spacing */
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Input and label styling */
+  label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #333;
+  }
+  
+  input[type="text"],
+  input[type="number"],
+  select,
+  textarea {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  input[disabled] {
+    background-color: #f0f0f0;
+    color: #888;
+  }
+  
+  textarea {
+    resize: vertical;
+    height: 60px;
+  }
+  
+  /* Button styling */
+  button {
+    padding: 10px 20px;
+    color: #fff;
+    background-color: #3d2fb3;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    align-self: center;
+    margin-top: 20px;
+  }
+  
+  button:hover {
+    background-color: #332a8d;
+  }
+  
+  /* Specific styling for the employee dropdown section */
+  .handover-section label {
+    color: #3d2fb3;
+  }
+  
+  .handover-section select {
+    font-weight: bold;
+  }
+  
+  /* Align text inputs in read-only mode */
+  input[disabled] {
+    text-align: right;
+  }
+  
+  /* Centered layout for better balance */
+  .transaction-details,
+  .handover-section {
+    max-width: 500px;
+    margin: 0 auto;
+  }
+  

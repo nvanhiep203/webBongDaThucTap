@@ -7,7 +7,7 @@ function Logintong () {
   const navigate = useNavigate()
 
   return (
-    <div>
+    <div className='divlogintong'>
       <div className='tieudebongda'>
         <img
           src={require('../../assets/images/bongda2.png')}
